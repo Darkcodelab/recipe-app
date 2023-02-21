@@ -1,14 +1,24 @@
 import dotenv from "dotenv";
-import express, { Express, Request, Response } from "express";
+import express, { Express } from "express";
+import errorHandler from "./middlewares/errorHandler";
+
+// routes handlers
+import userHandler from "./routes/api/user";
 
 dotenv.config();
 const PORT = process.env.PORT;
 
 const app: Express = express();
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Recipe App API");
-});
+// middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+// routes
+app.use("/api/user", userHandler);
+
+// error handler
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`[server]: Server is listening on port ${PORT}`);
