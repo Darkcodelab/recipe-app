@@ -1,18 +1,13 @@
-import { PrismaClient, User } from "@prisma/client";
+import env from "../config";
+const JWT_SECRET_KEY = env.JWT_SECRET_KEY;
+
 import { Response, Request } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-dotenv.config();
 
-const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
-if (!JWT_SECRET_KEY) {
-  console.error("JWT_SECRET_KEY env variable not found");
-  process.exit(1);
-}
-const prisma = new PrismaClient();
+import prisma from "../db";
 
 // check if the given email already exists in the DB
 async function checkExistingUser(email: string): Promise<Boolean> {
@@ -93,7 +88,7 @@ export const loginUser = expressAsyncHandler(
     // define zod schema
     const userSchema = z.object({
       email: z.string().email("This is not a valid email"),
-      password: z.string(),
+      password: z.string().min(1, "Password must not be empty"),
     });
     // validate with schema
     const validation = userSchema.safeParse({ email, password });
