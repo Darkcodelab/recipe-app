@@ -1,13 +1,12 @@
 import env from "../config";
-const JWT_SECRET_KEY = env.JWT_SECRET_KEY;
-
+import prisma from "../db";
 import { Response, Request } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-import prisma from "../db";
+const JWT_SECRET_KEY = env.JWT_SECRET_KEY;
 
 // check if the given email already exists in the DB
 async function checkExistingUser(email: string): Promise<Boolean> {

@@ -2,7 +2,6 @@ import { User } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import env from "../config";
-
 import prisma from "../db";
 
 const authorizeUser = async (

@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
-dotenv.config();
 import { cleanEnv, str, num, url } from "envalid";
+
+dotenv.config();
 
 const env = cleanEnv(process.env, {
   JWT_SECRET_KEY: str(),
