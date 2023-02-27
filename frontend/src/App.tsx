@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // pages
 import Auth from "./pages/Auth";
@@ -11,6 +13,7 @@ function App() {
           <Route path="/auth" element={<Auth />} />
         </Routes>
       </Router>
+      <ToastContainer />
     </main>
   );
 }

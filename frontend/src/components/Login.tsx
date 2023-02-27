@@ -1,5 +1,9 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm, Resolver } from "react-hook-form";
+import { useAppDispatch } from "../store/hooks";
+import { userLogin } from "../store/user/actions";
+import { toast } from "react-toastify";
 
 // images
 import AuthImage from "../assets/auth-image.jpg";
@@ -36,15 +40,30 @@ const resolver: Resolver<FormValues> = async (values) => {
 type setView = React.Dispatch<React.SetStateAction<"LOGIN" | "REGISTER">>;
 
 function Login({ setView }: { setView: setView }) {
+  const [loading, setLoading] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({ resolver });
 
-  const handleFormSubmit = handleSubmit((data) => {
-    console.log(data);
-    // TODO: Handle Form submit
+  const handleFormSubmit = handleSubmit(async (data) => {
+    setLoading(true);
+    const res = await dispatch(
+      userLogin({
+        user: {
+          email: data.email,
+          password: data.password,
+        },
+      })
+    );
+    setLoading(false);
+    if (res.success) {
+      toast.success("Authenticated!");
+    } else {
+      toast.error(res.error);
+    }
   });
 
   return (
@@ -94,6 +113,7 @@ function Login({ setView }: { setView: setView }) {
           <button
             type="submit"
             className="py-4 bg-primaryTeal text-white rounded-lg mt-4 shadow-lg text-md lg:mt-8"
+            disabled={loading}
           >
             Sign In
           </button>

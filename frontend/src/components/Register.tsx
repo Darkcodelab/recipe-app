@@ -1,4 +1,7 @@
+import { useState } from "react";
 import { useForm, Resolver } from "react-hook-form";
+import { userRegister } from "../store/user/actions";
+import { toast } from "react-toastify";
 
 // images
 import AuthImage from "../assets/auth-image.jpg";
@@ -47,15 +50,30 @@ const resolver: Resolver<FormValues> = async (values) => {
 type setView = React.Dispatch<React.SetStateAction<"LOGIN" | "REGISTER">>;
 
 function Register({ setView }: { setView: setView }) {
+  const [loading, setLoading] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({ resolver });
 
-  const handleFormSubmit = handleSubmit((data) => {
-    console.log(data);
-    // TODO: Handle Form submit
+  const handleFormSubmit = handleSubmit(async (data) => {
+    setLoading(true);
+    const res = await userRegister({
+      user: {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      },
+    });
+    setLoading(false);
+    if (res.success === true) {
+      toast.success("Successfully Registered!.");
+      toast.success("Log in to your new account");
+      setView("LOGIN");
+    } else {
+      toast.error(res.error);
+    }
   });
 
   return (
@@ -114,6 +132,7 @@ function Register({ setView }: { setView: setView }) {
           <button
             type="submit"
             className="py-4 bg-primaryTeal text-white rounded-lg mt-4 shadow-lg text-md lg:mt-8"
+            disabled={loading}
           >
             Register
           </button>

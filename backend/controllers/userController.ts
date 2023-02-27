@@ -51,12 +51,12 @@ export const registerUser = expressAsyncHandler(
     // validate with schema
     const validation = userSchema.safeParse({ name, email, password });
     if (validation.success === false) {
-      res.json(validation);
+      res.json({ success: false, error: validation.error.issues[0].message });
       return;
     }
     // check for existing user
     if (await checkExistingUser(email)) {
-      res.status(401).json({ success: false, error: "user already exists" });
+      res.json({ success: false, error: "user already exists" });
       return;
     }
     const newUser = await prisma.user.create({
