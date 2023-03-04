@@ -1,8 +1,7 @@
 import axios from "axios";
 import { AppDispatch } from "../store";
 import { setUser } from "./slice";
-
-const backendURL = "http://localhost:3001";
+import { backendURL } from "../../config";
 
 type userData = {
   user: {

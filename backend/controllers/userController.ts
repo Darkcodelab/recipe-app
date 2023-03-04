@@ -5,6 +5,7 @@ import expressAsyncHandler from "express-async-handler";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { User } from "@prisma/client";
 
 const JWT_SECRET_KEY = env.JWT_SECRET_KEY;
 
@@ -119,5 +120,34 @@ export const loginUser = expressAsyncHandler(
       });
       res.json({ success: true, user: userWithoutPassword, token });
     }
+  }
+);
+
+// @route /api/user/verifyToken
+// @method POST
+export const verifyToken = expressAsyncHandler(
+  async (req: Request, res: Response) => {
+    let token = "";
+    if (req?.headers?.authorization) {
+      token = req.headers.authorization.split(" ")[1];
+    }
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET_KEY) as User;
+      if (decoded?.id) {
+        const user = await prisma.user.findUnique({
+          where: {
+            id: decoded.id,
+          },
+        });
+        if (user?.id) {
+          const userWithoutPassword = exclude(user, ["password"]);
+          res.json({ success: true, user: userWithoutPassword });
+          return;
+        }
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
+    res.json({ success: false, error: "Invalid token" });
   }
 );

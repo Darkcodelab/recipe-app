@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm, Resolver } from "react-hook-form";
 import { useAppDispatch } from "../store/hooks";
 import { userLogin } from "../store/user/actions";
@@ -41,6 +41,7 @@ type setView = React.Dispatch<React.SetStateAction<"LOGIN" | "REGISTER">>;
 
 function Login({ setView }: { setView: setView }) {
   const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const {
     register,
@@ -60,7 +61,8 @@ function Login({ setView }: { setView: setView }) {
     );
     setLoading(false);
     if (res.success) {
-      toast.success("Authenticated!");
+      toast.success("Login Successful!");
+      navigate("/");
     } else {
       toast.error(res.error);
     }

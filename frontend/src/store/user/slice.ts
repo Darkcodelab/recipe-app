@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 import reducers from "./reducers";
-import { useAppSelector } from "../hooks";
-import { userLogin } from "./actions";
+import { backendURL } from "../../config";
 
 export type User = {
   id: number | null;
@@ -12,7 +12,7 @@ export type User = {
   updatedAt: string;
 };
 
-const initialState: User = {
+let initialState: User = {
   id: null,
   name: "",
   email: "",
@@ -20,6 +20,19 @@ const initialState: User = {
   createdAt: "",
   updatedAt: "",
 };
+
+const userToken = localStorage.getItem("userToken");
+
+if (userToken) {
+  const { data } = await axios.get(`${backendURL}/api/user/verifyToken`, {
+    headers: {
+      authorization: "JWT " + userToken,
+    },
+  });
+  if (data.success === true) {
+    initialState = data.user;
+  }
+}
 
 export const userSlice = createSlice({
   name: "user",
