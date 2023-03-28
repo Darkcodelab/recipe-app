@@ -79,7 +79,7 @@ function Login({ setView }: { setView: setView }) {
           className="flex flex-col max-w-[600px] w-full mx-auto py-2 lg:py-4"
           onSubmit={handleFormSubmit}
         >
-          <div className="bg-white p-4 rounded-lg mt-2 flex items-center gap-2 lg:mt-4">
+          <div className="bg-white p-4 rounded-lg mt-2 flex items-center gap-2">
             <AtSymbolIcon className="h-5" />
             <input
               type="email"
@@ -93,7 +93,7 @@ function Login({ setView }: { setView: setView }) {
               <p className="text-red-500 text-sm">{errors.email.message}</p>
             )}
           </div>
-          <div className="bg-white p-4 rounded-lg mt-2 flex items-center gap-2 lg:mt-4">
+          <div className="bg-white p-4 rounded-lg mt-2 flex items-center gap-2">
             <LockClosedIcon className="h-5" />
             <input
               type="password"
