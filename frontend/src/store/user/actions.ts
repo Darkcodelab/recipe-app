@@ -11,6 +11,15 @@ type userData = {
   };
 };
 
+const initialState = {
+  id: null,
+  name: "",
+  email: "",
+  favorites: [],
+  createdAt: "",
+  updatedAt: "",
+};
+
 export const userLogin =
   (userData: userData) => async (dispatch: AppDispatch) => {
     try {
@@ -38,4 +47,9 @@ export const userRegister = async (userData: userData) => {
   } catch (error: any) {
     return { success: false, error: error?.message };
   }
+};
+
+export const userLogout = () => (dispatch: AppDispatch) => {
+  localStorage.setItem("userToken", "");
+  dispatch(setUser(initialState));
 };
