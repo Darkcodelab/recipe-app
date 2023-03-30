@@ -5,6 +5,7 @@ import cors from "cors";
 
 // routes handlers
 import userHandler from "./routes/api/user";
+import recipesHandler from "./routes/api/recipes";
 
 const app: Express = express();
 
@@ -19,6 +20,7 @@ app.use(
 
 // routes
 app.use("/api/user", userHandler);
+app.use("/api/recipes", recipesHandler);
 
 // error handler
 app.use(errorHandler);

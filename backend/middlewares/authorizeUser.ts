@@ -25,7 +25,7 @@ const authorizeUser = async (
           id: decoded.id,
         },
       });
-      if (!user || user?.id) {
+      if (!user || !user?.id) {
         res.locals.user = undefined;
         next();
       } else {

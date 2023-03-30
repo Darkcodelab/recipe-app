@@ -1,12 +1,19 @@
 import { useForm } from "react-hook-form";
+import { useAppDispatch } from "../store/hooks";
+import { fetchRecipes } from "../store/recipe/action";
+import { toast } from "react-toastify";
 
 // icons
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 function SearchForm() {
+  const dispatch = useAppDispatch();
   const { register, handleSubmit } = useForm();
-  const handleFormSubmit = handleSubmit((data) => {
-    console.log(data);
+  const handleFormSubmit = handleSubmit(async (data) => {
+    const res = await dispatch(fetchRecipes(data));
+    if (!res.success) {
+      toast.error(res.error);
+    }
   });
 
   return (
