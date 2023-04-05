@@ -4,9 +4,18 @@
 
 ## Description
 
-Find recipes using different search parameters
+Find recipes using different search parameters.
 
-Table Of Contents
+- User can Register and Login
+- User can search for dish recipes by
+  - dish name
+  - cuisine type
+  - meal type
+  - dish type
+  - diet
+- User can save/delete favorite recipes
+
+## Table Of Contents
 
 - [Installation](#installation)
 - [License](#license)
