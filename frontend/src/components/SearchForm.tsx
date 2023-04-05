@@ -13,7 +13,10 @@ function SearchForm() {
     const res = await dispatch(fetchRecipes(data));
     if (!res.success) {
       toast.error(res.error);
+      return;
     }
+    // TODO: parse the response and show it to the users
+    console.log(res);
   });
 
   return (
@@ -21,7 +24,7 @@ function SearchForm() {
       <div className="flex justify-center items-center max-w-[600px] mx-auto bg-secondaryBlack p-3 rounded shadow-lg">
         <input
           type="text"
-          {...register("query")}
+          {...register("q")}
           placeholder="Ingredients or Dish names..."
           className="w-full bg-transparent outline-none text-sm"
         />

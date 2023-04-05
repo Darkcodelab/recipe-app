@@ -24,12 +24,9 @@ let initialState: User = {
 const userToken = localStorage.getItem("userToken");
 
 if (userToken) {
+  axios.defaults.headers.common["Authorization"] = `JWT ${userToken}`;
   try {
-    const { data } = await axios.get(`${backendURL}/api/user/verifyToken`, {
-      headers: {
-        authorization: "JWT " + userToken,
-      },
-    });
+    const { data } = await axios.get(`${backendURL}/api/user/verifyToken`);
     if (data.success === true) {
       initialState = data.user;
     }
